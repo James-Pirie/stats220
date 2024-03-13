@@ -1,0 +1,190 @@
+---
+title: "Creating Images with R"
+subtitle: "with a little bit of magick"
+author: "James Pirie"
+output: html_document
+---
+#### Github Repo: <a href="https://github.com/James-Pirie/stats220">github.com/James-Pirie/stats220</a>
+
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+
+## My CSS
+```{css}
+.main-container {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    border-radius: 10px;
+    padding: 2%;
+    padding-top: 0%;
+    max-width: 90%;
+    background-color: #D4E8FC;
+}
+hr { 
+  background-color: #3949a4; 
+  height: 1px; 
+  border: 0; }
+
+
+body{
+  font-family: 'Karla', sans-serif; 
+  color: #3949a4;
+  background-image: linear-gradient(to right bottom, #5e77e0, #556bd1, #4c60c2, #4254b3, #3949a4);hr { 
+  border: 0; 
+}
+
+.inspo_meme{
+  width: 20vw;
+}
+
+
+```
+---
+## Project requirements
+- Satisfying Requirements: For this project, I was required to write an R script to generate a meme, based off an inspiration. In the sections below I show and link to the insperation meme, describe the components. I then make a meme based on the inspiration with two components changed. I then created this markdown html page based upon the provided template, and used css to style the page. Changing colors, background design and everything as shown below in the attached code snipit. I then documented and explained my decisions, code and outputs below. I also animated the meme, adding 3 more chad images to create a 4 framed gif file.
+
+- Github Repo: <a href="https://github.com/James-Pirie/stats220">github.com/James-Pirie/stats220</a>
+- Inspo Meme Site: https://i.imgflip.com/6zuf4n.jpg
+
+### Screenshot of Project Folder
+
+<div class="inspo_meme">
+  ![](Screenshot.png)
+</div>
+
+
+## My meme
+<div class="inspo_meme">
+  ![](inspo_meme.jpeg)
+</div>
+### Meme Explained
+- The meme derives it's humor from the idea that it's typically unconventional to play video games with the arrow keys. Typicaly, anyone who does this would be considered unusual, however, the meme depicts the arrow key user as the chad. The joke being that the unconventional way is the best way, and that everyone is unusual.
+
+### Components Inspo Meme
+- Image: The primary component of this image is a masculine confident man, smiling (chad). Chad represents a sterotypical caricature of the "idea" man, or at least an unrealisticaly confident and succesful individual.
+- Text: The text represents the "Chad's" speech, it is displayed above the image and is of a white font and is on a blank background. The text says "yes I play games with the arrow keys, how did you know".
+- Link: https://i.imgflip.com/6zuf4n.jpg
+
+### What I Will Change
+- Image: I will use a different chad image of my preference
+- Text: I will change the text to be more relevant to this course
+
+### Meme Output
+
+<div class="inspo_meme">
+  ![](meme.png)
+</div>
+
+```{r meme-code, eval=TRUE}
+library(magick)
+
+# creates the text header for the meme
+library(magick)
+
+# creates the text header for the meme
+meme_text <- image_blank(width = 400, 
+            height = 35, 
+            color = "#000000") %>%
+  image_annotate(text = "Yes I take stats 220, How did you know?",
+                 color = "#999999",
+                 size = 25,
+                 font = "Impact",
+                 gravity = "north center")
+
+
+# gets the chad image and scales it to the size of the header
+chad_image <- image_read("chad4.png") %>%
+  image_scale(400)
+
+
+# stacks the header on top of the chad image
+meme_vector <- c(meme_text, chad_image)
+image_append(meme_vector, stack=TRUE)  %>% 
+  image_write('meme.png')
+
+```
+
+
+```{r animation-code, eval=FALSE}
+library(magick)
+
+# -------- create meme section -------- #
+
+# creates the text header for the meme
+meme_text <- image_blank(width = 400, 
+            height = 35, 
+            color = "#000000") %>%
+  image_annotate(text = "Yes I take stats 220, How did you know?",
+                 color = "#999999",
+                 size = 25,
+                 font = "Impact",
+                 gravity = "north center")
+
+
+# gets the chad image and scales it to the size of the header
+chad_image <- image_read("chad.png") %>%
+  image_scale(400)
+
+chad_image2 <- image_read("chad2.png") %>%
+  image_scale(400)
+
+chad_image3 <- image_read("chad3.png") %>%
+  image_scale(400)
+
+chad_image4 <- image_read("chad4.png") %>%
+  image_scale(400)
+
+
+# stacks the header on top of the chad image
+meme_vector <- c(meme_text, chad_image)
+image_append(meme_vector, stack=TRUE)  %>% image_write('meme.png')
+
+meme_vector2 <- c(meme_text, chad_image2)
+image_append(meme_vector2, stack=TRUE)  %>% image_write('meme2.png')
+
+meme_vector3 <- c(meme_text, chad_image3)
+image_append(meme_vector3, stack=TRUE)  %>% image_write('meme3.png')
+
+meme_vector4 <- c(meme_text, chad_image4)
+image_append(meme_vector4, stack=TRUE)  %>% image_write('meme4.png')
+
+# -------- create animation section -------- #
+
+# use the just created memes as frames
+meme_image = image_read("meme.png")
+meme2_image = image_read("meme2.png")
+meme3_image = image_read("meme3.png")
+meme4_image = image_read("meme4.png")
+
+# turn the frames into a vector
+frames <- c(meme_image, meme2_image, meme3_image, meme4_image)
+
+# combine the frames to create a gif
+image_animate(frames, fps = 1) %>%
+  image_write("meme.gif")
+```
+
+### Animation Final Result
+
+
+<div class="inspo_meme">
+  ![](meme.gif)
+</div>
+
+
+
+## Creativity
+### How my Project Demonstrates Creativity:
+- Meme: For the meme, I tied the meme into stats220, but depicting someone who takes this course as the stereotypical "chad", as described above. I also used a different image for the chad, this image more resembles a scholar, indicating the stats 220 student is not only embodying the aforementioned chad characteristics, but also traits of intelligence and academic prowess.
+- CSS: For the html document, I used creativity to style my report in an aesthetically pleasing manner. I picked a minimalist font, and used a third party site to pick a coherent colour scheme, of various shades of blue. I also differentiated the background from the foreground with a colour gradient, and softened the corners of the foreground, to make the page seem friendlier and softer. I think the colours and fonts blend well together and go a long way to make the page feel friendlier.
+  
+
+## Learning reflection
+- One Important Idea: The most important idea I learnt from this section, Module 1 Creating HTML by combining modern technologies, is the concept of integrating technologies together to create seamless results. For example, the meme is created in R code, itself, using the magik library, and then finaly, rendered in this document by using markdown, which in itself converts to html tags. By combining all these technologies, I can create and display a meme seamlessly on this page, without the user realizing anything special has happened.
+- What I am Curious About Exploring: I am most interested in exploring how I can collect and manipulate large amounts of real life data. In the past I have experimented with scraping data from online and compiling it in graphs, I even made a site (shameless plug: <a href="https://devmarket.nz/">devmarket.nz</a>), so it is a big interest of mine.
+
